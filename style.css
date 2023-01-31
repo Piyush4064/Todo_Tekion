@@ -1,0 +1,186 @@
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins',sans-serif;
+}
+.container{
+    width: 90%; 
+    min-width: 450px;
+    position: absolute;
+    height: 100vh;
+    margin-top: 10%;
+    transform: translate(-50%,-50%);
+    top: 30%;
+    left: 50%;
+    background: white;
+    border-radius: 10px;
+}
+
+#newtask{
+    width: 40%;
+    margin: 0;
+  position: relative;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#newtask input{
+    width: 70%;
+    height: 10%;
+    font-size: 15px;
+    border: 2px solid #d1d3d4;
+    padding: 12px;
+    color: #111111;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+#newtask button{
+    float: right;
+    width: 10%;
+    height: 30px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: #000000;
+    border: none;
+    color: #ffffff;
+}
+#tasks{
+    padding: 30px 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    width: 80%;
+}
+.task{
+    height: 30px;
+    width: 60%;
+    margin-bottom: 2px;
+    margin-top: 2%;
+    padding: 5px 10px;
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid #000;
+    cursor: default;
+    margin-left: 18%;
+}
+.delete {
+    background-color: #000;
+    color: #ffffff;
+    height: 100%;
+    width: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin-left : auto;
+    margin-right: 0;
+    /* margin-right: 0; */
+}
+.pinStyle {
+    background-color: grey;
+    color: #ffffff;
+    height: 100%;
+    width: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin-left : 2%;
+}
+
+.completed{
+    text-decoration: line-through;
+}
+
+
+.checkBox {
+    margin-right: 2%;
+}
+ 
+
+input[type=checkbox] {
+    accent-color: #000;
+  }
+
+.edit {
+    background-color: #000;
+    color: #ffffff;
+    height: 100%;
+    width: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin-left : auto;
+    margin-right: 0;
+    /* grid-column: 11/12; */
+}
+
+.editInput {
+    width: 50%;
+    height: 30px;
+    font-size: 14px;
+    border: 2px solid #d1d3d4;
+    padding: 8px;
+    color: #111111;
+    font-weight: 500;
+    border-radius: 5px;
+    margin-bottom: 6px;
+}
+
+.inputSpan {
+    /* overflow-y:scroll; */
+    /* height: 114px; */
+    /* scroll-snap-align: center;
+    display: inline-block;
+    width: 20%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+    margin-top: 1%;
+    padding: 1% 5% 1% 1%;
+    min-width: 30%;
+}
+
+.dropDown {
+    margin-top: 2%;
+    /* width: 1200px; */
+}
+
+.editOff {
+    cursor: default;
+}
+
+.display {
+    margin-top: 11%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    display: flex;
+}
+
+.displayCategory {
+    display: inline;
+    text-align: center;
+    width: 33%;
+}
+
+h3 {
+    display: inline;
+}
+
+#centerDiv {
+    border-right: 1px black solid;
+    border-left: 1px black solid;
+}
+
+.forInsert {
+    display: inline;
+    text-align: center;
+}
+
+#taskType {
+    width: 200px;
+}
