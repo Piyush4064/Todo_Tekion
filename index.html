@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ToDoMVC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="./controller/controller.js" defer></script>
+</head>
+<body>
+    <div id="app" class="container">
+        <div id="newtask">
+			<h1>Todo App</h1>
+            <input type="text" placeholder="New Task" class="inputForTask">
+            <button id="push">Add</button>
+            
+            <div class="dropDown">
+                <label for="workCategory">Choose a category:</label>
+                <select name="taskName" id="taskType" placeholder="Select a category">
+                    <option value="Select a category">Select a category</option>
+                </select>
+            </div>
+
+            <div id="submitNewCategory">
+                <input type="text" placeholder="Add a new category." id="inputCategory">
+                <button class="addCategory">Add</button>
+            </div>
+        </div>
+
+        <div class="display">
+            <!-- <div class="displayCategory">
+                <div id="work" class="forInsert">
+                    <h3>Work</h3>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    
+</body>
+</html>
