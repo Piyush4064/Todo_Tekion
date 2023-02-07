@@ -1,186 +1,176 @@
 import view from '../view/view.js';
-import {items, categories} from '../model/model.js';
+import {todos, todoCategories, createObject, saveTodos, saveTodoCategories} from '../model/model.js';
 
-const push = document.querySelector('#push');
-const input = document.querySelector('#newtask input');
-const dropDownSelection = document.querySelector('#taskType');
+const addTodo = document.querySelector('#addTodo');
+const todoInput = document.querySelector('header input');
+const addTodoCategory = document.querySelector('.addTodoCategory');
+const inputForTodoCategory = document.getElementById('inputForTodoCategory');
+const todoCategorySelect = document.querySelector('#todoCategories');
 
-function createObj(id, category, value, isComplete, isPin) {
-    this.id = id;
-    this.category = category;
-    this.value = value;
-    this.isComplete = isComplete;
-    this.isPin = isPin;
-}
 
 function capitalizeFirstLetter(str) {
-    const capitalized = str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    return capitalized;
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-function findIndexInItems(currentDivId, categoryType) {
-    for(let i=0; i<items[categoryType].length; i++) {
-        if(items[categoryType][i].id == Number(currentDivId)) {
-            console.log("Okkk");
-            return i;
+function findTaskId(currentDivId, todoCategory) {
+    for(let index=0; index<todos[todoCategory].length; index++) {
+        if(todos[todoCategory][index].id == Number(currentDivId)) {
+            return index;
         }
     }
+    return -1;
 }
 
-function changeValueOfTodo(eventData, categoryType) {
-    const currentDivId = eventData.target.getAttribute('id').slice(5);
-    const index = findIndexInItems(currentDivId, categoryType);
-    console.log(index);
-    items[categoryType][index].value = eventData.target.textContent;
-    addItemAccordingToList();
+function changeValueOfTodo(event, todoCategory, currentDivId) {
+    const index = findTaskId(currentDivId, todoCategory);
+    const updatedValue = event.target.textContent;
+    if(updatedValue.trim()=="") {
+        const deleteButton = document.getElementById(`deleteButton-${currentDivId}`);
+        deleteButton.click();
+        return;
+    }
+    todos[todoCategory][index].value = updatedValue;
 }
 
-export function createItem(newEntry, categoryType) {
+export function createItem(newEntry, todoCategory) {
     const div = view.createDivWithAllElements(newEntry);
-    let isPin = false;
-
     const divId = div.getAttribute("data-id");
 
-    const checkBox = div.childNodes[0];
-    const deleteButton = div.childNodes[2];
+    const edit = div.childNodes[1];
     const pinButton = div.childNodes[3];
-    const editButton = div.childNodes[1];
-
-    // Delete
-    deleteButton.onclick = function(e) {
-        const currentDivId = e.target.getAttribute('id').slice(13);
-        const index = findIndexInItems(currentDivId, categoryType);
-        items[categoryType].splice(index, 1);
-        if(items[categoryType].length == 0) {
-            delete items[categoryType];
-        }
-        addItemAccordingToList();
-    }
-
-    // checkBox;
-    checkBox.onclick = function(e) {
-        const currentDivId = e.target.getAttribute('id').slice(9);
-        const index = findIndexInItems(currentDivId, categoryType);
-
-        if(!div.classList.contains('completed')) {
-            div.classList.add('completed');
-            items[categoryType][index].isComplete = true;
-        } 
-        else {
-            div.classList.remove("completed"); 
-            items[categoryType][index].isComplete = false;
-        }
-    }
-
-    // Pin Button
-    pinButton.onclick = function(e){
-        const currentDivId = e.target.getAttribute("id").slice(10);
-        console.log(currentDivId);
-        const index = findIndexInItems(currentDivId, categoryType);
-
-        if(!items[categoryType][index].isPin) {
-            view.pinButtonChanges(pinButton, "#000");
-            items[categoryType][index].isPin = !items[categoryType][index].isPin;
-            const targetElement = items[categoryType][index];
-            items[categoryType].splice(index, 1);
-            items[categoryType].unshift(targetElement);
-        }
-        else {
-            view.pinButtonChanges(pinButton, "grey");
-            items[categoryType][index].isPin = !items[categoryType][index].isPin;
-            const targetElement = items[categoryType][index];
-            items[categoryType].splice(index, 1);
-            items[categoryType].push(targetElement);
-        }
-        addItemAccordingToList();
-    }
-
-    // Edit Button
-    editButton.addEventListener('click', function() {
-        if(!div.classList.contains('completed')) {
-            editButton.setAttribute('contenteditable', true);
-        }
-    });
     
-    editButton.addEventListener('keypress', function(e) {
+    // Overall event listner of a todo
+    div.addEventListener('click', handleAllEventsOfTodo);
+
+    function handleAllEventsOfTodo(event) {
+        const id = event.target.getAttribute('id');
+        if(id!=null) {
+            // edit.style.maxHeight = "auto";
+            edit.classList.toggle('todoCardExpand');
+        }
+
+        if(id==null) {
+            return;
+        }
+        else if(id.startsWith("checkBox")) {
+            const index = findTaskId(divId, todoCategory);
+            div.classList.toggle("completed");
+            todos[todoCategory][index].isComplete = !todos[todoCategory][index].isComplete;
+            saveTodos();
+        }
+        else if(id.startsWith("deleteButton")) {
+            const index = findTaskId(divId, todoCategory);
+            todos[todoCategory].splice(index, 1);
+            if(todos[todoCategory].length == 0) {
+                delete todos[todoCategory];
+                const removeCard = document.getElementById(todoCategory).parentNode;
+                removeCard.remove();
+            }
+            div.remove();
+            saveTodos();
+        }
+        else if(id.startsWith("pinButton")) {
+            const index = findTaskId(divId, todoCategory);
+            view.pinButtonChanges(pinButton);
+            const isPin = todos[todoCategory][index].isPin;
+            todos[todoCategory][index].isPin = !todos[todoCategory][index].isPin;
+            const todoToUpdate = todos[todoCategory][index];
+            todos[todoCategory].splice(index, 1);
+            const currentDisplay = document.getElementById(todoCategory);
+
+            if(!isPin) {
+                todos[todoCategory].unshift(todoToUpdate);
+                currentDisplay.prepend(div);
+            }
+            else {
+                todos[todoCategory].push(todoToUpdate);
+                currentDisplay.append(div);
+            }
+            saveTodos();
+        }
+
+        edit.addEventListener("dblclick", function() {
+            if(!div.classList.contains('completed')) {
+                edit.setAttribute('contenteditable', true);
+                edit.focus();
+            }
+        })
+    }
+    
+    edit.addEventListener('keypress', function(e) {
         if(e.key === "Enter") {
-            changeValueOfTodo(e, categoryType);
-            editButton.setAttribute('contenteditable', false);
+            changeValueOfTodo(e, todoCategory, divId);
+            edit.setAttribute('contenteditable', false);
+            saveTodos();
         }
     });
-    // console.log(div);
     return div;
 }
 
-function addItemAccordingToList(){
-    view.remove();
-    view.render(items);
-}
-
-function eventListnerPushButton(){
-    if(input.value.trim().length == 0){
+function addTodoClickEvent(){
+    if(todoInput.value.trim().length == 0){
         alert("Please Enter a Task");
     }
-    else if(dropDownSelection.value == "Select a category") {
+    else if(todoCategorySelect.value == "") {
         alert("Please select a valid category");
     }
     else{
-        const value = input.value;
-        let taskCategory = dropDownSelection.value;
-        taskCategory = capitalizeFirstLetter(taskCategory);
+        const value = todoInput.value;
+        let todoCategory = todoCategorySelect.value;
+        todoCategory = capitalizeFirstLetter(todoCategory);
         const uniqueId = new Date().valueOf();
         let isComplete = false;
         let isPin = false;
 
-        let newEntry = new createObj(uniqueId, taskCategory, value, isComplete, isPin);
-        if(items.hasOwnProperty(taskCategory)) {
-            items[taskCategory].push(newEntry);
+        let newEntry = new createObject(uniqueId, todoCategory, value, isComplete, isPin);
+        view.appendNewTodo(newEntry, todos.hasOwnProperty(todoCategory));
+        if(todos.hasOwnProperty(todoCategory)) {
+            todos[todoCategory].push(newEntry);
         }
         else {
-            items[taskCategory] = [];   
-            items[taskCategory].push(newEntry);
+            todos[todoCategory] = [];   
+            todos[todoCategory].push(newEntry);
         }
 
-        addItemAccordingToList(items);
-        input.value = "";
+        // const currentTodoCategory = structuredClone(todos[todoCategory]);
+        // todos[todoCategory] = structuredClone([...currentTodoCategory || [], newEntry]);
+        todoInput.value = "";
+        saveTodos();
     }
 }
 
-function eventListnerInput(event) {
+function addTodoEnterEvent(event) {
     if (event.key === "Enter") {
       event.preventDefault();
-      push.click();
+      addTodo.click();
     }
 }
 
-input.addEventListener("keypress", eventListnerInput);
-push.addEventListener("click", eventListnerPushButton);
+todoInput.addEventListener("keypress", addTodoEnterEvent);
+addTodo.addEventListener("click", addTodoClickEvent);
 
-const inputCategory = document.getElementById('inputCategory');
-const addCategory = document.querySelector('.addCategory');
-
-addCategory.addEventListener('click', function(e) {
-    let value = inputCategory.value;
-    value = capitalizeFirstLetter(value);
+addTodoCategory.addEventListener('click', function(e) {
+    let value = inputForTodoCategory.value;
     if(value.trim()==="") {
         alert('Please enter valid category');
     }
     else {
-        categories.push(value);
-        view.removeOptions();
-        view.renderOptions(categories);
+        value = capitalizeFirstLetter(value);
+        if(!todoCategories.includes(value)) {
+            todoCategories.push(value);
+            view.appendNewCategory(value);
+            saveTodoCategories();
+        }
     }
-    inputCategory.value = "";   
+    inputForTodoCategory.value = "";   
 })
 
-function eventListnerInputCategory(event) {
+inputForTodoCategory.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
-      addCategory.click();
+      addTodoCategory.click();
     }
-}
-
-inputCategory.addEventListener("keypress", eventListnerInputCategory);
+});
 
 
 
@@ -188,6 +178,11 @@ inputCategory.addEventListener("keypress", eventListnerInputCategory);
 // TODO: do it with vanilla js
 
 $(function(){
-    $("#taskType").select2();
+    $("#todoCategories").select2();
 });
 
+
+window.addEventListener("load", function() {
+    view.renderTodo(todos);
+    view.renderCategories(todoCategories);
+});

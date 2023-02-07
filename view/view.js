@@ -1,60 +1,84 @@
 import { createItem } from "../controller/controller.js";
 
-const display = document.querySelector('.display');
-const taskType = document.querySelector('#taskType');
+const cardsForAllCategories = document.querySelector('.cardsForAllCategories');
+const todoCategories = document.querySelector('#todoCategories');
 
-function createButton(type) {
+function createButton(category, className) {
     const button = document.createElement('button');
-    button.innerHTML = type;
+    button.innerHTML = category;
+    button.classList.add(className);
     return button;
 }
 
-const view = {
-    remove() {
-        while (display.lastElementChild) {
-            display.removeChild(display.lastElementChild);
-        }
-    },
+function createCardForNewCategory(todoCategory) {
+    const cardForCategory = document.createElement('div');
+    cardForCategory.classList.add('card');
+    const h3 = document.createElement('h3');
+    h3.textContent = todoCategory;
+    const cardForTodo = document.createElement('div');
+    cardForTodo.setAttribute('class', 'forInsert');
+    cardForTodo.setAttribute("id", todoCategory);
+    cardForCategory.append(h3);
+    cardForCategory.append(cardForTodo);
+    return [cardForCategory, cardForTodo];
+}
 
-    render(items) {
-        for(let item in items) {
-            const outerDiv = document.createElement('div');
-            outerDiv.classList.add('displayCategory');
-            const h3 = document.createElement('h3');
-            h3.textContent = `${item}`;
-            const innerDiv = document.createElement('div');
-            innerDiv.setAttribute('class', 'forInsert');
-            outerDiv.append(innerDiv);
-            innerDiv.append(h3);
-            for(let element of items[item]) {
-                let newItem = createItem(element, item);
-                innerDiv.append(newItem);
+function checkForCompletedAndPinned(newItem, data) {
+    const checkBox = newItem.childNodes[0];
+    const pinButton = newItem.childNodes[3];
+    if(data.isComplete) {
+        checkBox.checked = true;
+        newItem.classList.toggle("completed");
+    }
+    if(data.isPin) {
+        pinButton.classList.add("pinButtonToggle");
+    }
+}
+
+const view = {
+    renderTodo(todos) {
+        for(let categoryOfTodo in todos) {
+            const [cardForCategory, cardForTodo] = createCardForNewCategory(categoryOfTodo);
+            for(let entry of todos[categoryOfTodo]) {
+                let newTodo = createItem(entry, categoryOfTodo);
+                checkForCompletedAndPinned(newTodo, entry);
+                cardForTodo.append(newTodo);
             }
-            display.append(outerDiv);
+            cardsForAllCategories.append(cardForCategory);
         }
-        // console.log(items);
     },
     
-    renderOptions(categories) {
-        for(let category of categories) {
+    renderCategories(categorySelectOptions) {
+        for(let item of categorySelectOptions) {
             const option = document.createElement('option');
-            option.setAttribute('value', `${category}`);
-            option.textContent = `${category}`;
-            taskType.append(option);
+            option.setAttribute('value', item);
+            option.textContent = item;
+            todoCategories.append(option);
         }
     },
 
-    removeOptions() {
-        while (taskType.lastElementChild) {
-            taskType.removeChild(taskType.lastElementChild);
-        }
+    appendNewCategory(value) {
+        const option = document.createElement('option');
+        option.setAttribute('value', value);
+        option.textContent = value;
+        todoCategories.append(option);
     },
 
+    appendNewTodo(newEntry, cardForNewCategory) {
+        if(!cardForNewCategory) {
+            const [cardForCategory, cardForTodo] = createCardForNewCategory(newEntry.todoCategory);
+            cardsForAllCategories.append(cardForCategory);
+        }
+        const currentDisplay = document.getElementById(newEntry.todoCategory);
+        let newTodo = createItem(newEntry, newEntry.todoCategory);
+        currentDisplay.append(newTodo);
+    },
+    
     createDivWithAllElements(newEntry) {
         const div = document.createElement('div');
         const uniqueId = newEntry.id;
         
-        div.setAttribute("data-id", `${uniqueId}`);
+        div.setAttribute("data-id", uniqueId);
 
         const inputCheckBox = document.createElement('input');
         inputCheckBox.setAttribute("type", "checkbox");
@@ -66,14 +90,12 @@ const view = {
         span.innerText = newEntry.value;
         span.setAttribute("id", `edit-${uniqueId}`);
 
-        div.classList.add("task");
+        div.classList.add("todoCard");
 
-        const button = createButton('<i class="fa-solid fa-trash"></i>');
-        button.classList.add("delete");
+        const button = createButton('<i class="fa-solid fa-trash"></i>', "delete");
         button.setAttribute("id", `deleteButton-${uniqueId}`);
 
-        const pinButton = createButton('<i class="fa-solid fa-thumbtack"></i>');
-        pinButton.classList.add('pinStyle');
+        const pinButton = createButton('<i class="fa-solid fa-thumbtack"></i>', 'pinStyle');
         pinButton.setAttribute("id", `pinButton-${uniqueId}`);
 
 
@@ -85,10 +107,9 @@ const view = {
         return div;
     },
 
-    pinButtonChanges(pinButton, color) {
-        pinButton.style.backgroundColor = color;
+    pinButtonChanges(pinButton) {
+        pinButton.classList.toggle("pinButtonToggle");
     }
 }
-
 
 export default view;

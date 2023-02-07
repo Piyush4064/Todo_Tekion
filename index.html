@@ -15,31 +15,24 @@
     <script type="module" src="./controller/controller.js" defer></script>
 </head>
 <body>
-    <div id="app" class="container">
-        <div id="newtask">
+    <div class="container">
+        <header>
 			<h1>Todo App</h1>
-            <input type="text" placeholder="New Task" class="inputForTask">
-            <button id="push">Add</button>
+            <input type="text" placeholder="New Todo" class="inputForTodo">
+            <button id="addTodo">Add</button>
             
-            <div class="dropDown">
-                <label for="workCategory">Choose a category:</label>
-                <select name="taskName" id="taskType" placeholder="Select a category">
-                    <option value="Select a category">Select a category</option>
+            <div class="dropDownMenu">
+                <label>Choose a category:</label>
+                <select id="todoCategories" data-placeholder = "Select a Category">
                 </select>
             </div>
 
-            <div id="submitNewCategory">
-                <input type="text" placeholder="Add a new category." id="inputCategory">
-                <button class="addCategory">Add</button>
-            </div>
-        </div>
+            <input type="text" placeholder="Add a new category." id="inputForTodoCategory">
+            <button class="addTodoCategory">Add</button>
+            
+        </header>
 
-        <div class="display">
-            <!-- <div class="displayCategory">
-                <div id="work" class="forInsert">
-                    <h3>Work</h3>
-                </div>
-            </div> -->
+        <div class="cardsForAllCategories">
         </div>
     </div>
     
