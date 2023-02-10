@@ -85,13 +85,11 @@ export function createItem(newEntry, todoCategory) {
 
     const edit = div.childNodes[1];
 
-    // Overall event listner of a todo
     div.addEventListener("click", handleTodoEvents);
 
     function handleTodoEvents(event) {
         const id = event.target.getAttribute("id");
         if (id != null) {
-            // edit.style.maxHeight = "auto";
             edit.classList.toggle("todoCardExpand");
         }
 
@@ -145,8 +143,6 @@ function addTodoClickEvent() {
             todos[todoCategory].push(newEntry);
         }
 
-        // const currentTodoCategory = todos[todoCategory];
-        // todos[todoCategory] = [...(currentTodoCategory || []), newEntry];
         todoInput.value = "";
         saveTodos();
     }
@@ -183,9 +179,6 @@ inputForTodoCategory.addEventListener("keypress", function (event) {
         addTodoCategory.click();
     }
 });
-
-// Jquery for select2
-// TODO: do it with vanilla js
 
 $(function () {
     $("#todoCategories").select2();
