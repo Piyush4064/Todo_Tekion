@@ -1,18 +1,26 @@
-const LOCAL_STORAGE_TODOS_KEY = 'LOCAL_STORAGE_TODOS_KEY';
+const LOCAL_STORAGE_TODOS_KEY = "LOCAL_STORAGE_TODOS_KEY";
 const todos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_TODOS_KEY)) || {};
 
-const LOCAL_STORAGE_TODO_CATEGORIES_KEY = 'LOCAL_STORAGE_TODO_CATEGORIES_KEY';
-const todoCategories = JSON.parse(localStorage.getItem(LOCAL_STORAGE_TODO_CATEGORIES_KEY)) || [];
+const LOCAL_STORAGE_TODO_CATEGORIES_KEY = "LOCAL_STORAGE_TODO_CATEGORIES_KEY";
+const todoCategories =
+    JSON.parse(localStorage.getItem(LOCAL_STORAGE_TODO_CATEGORIES_KEY)) || [];
 
 function saveTodos() {
     localStorage.setItem(LOCAL_STORAGE_TODOS_KEY, JSON.stringify(todos));
 }
 function saveTodoCategories() {
-    localStorage.setItem(LOCAL_STORAGE_TODO_CATEGORIES_KEY, JSON.stringify(todoCategories));
+    localStorage.setItem(
+        LOCAL_STORAGE_TODO_CATEGORIES_KEY,
+        JSON.stringify(todoCategories)
+    );
 }
 
-class createObject {
-    #_id; #_todoCategory; #_value; #_isComplete; #_isPin;
+class todoObject {
+    #_id;
+    #_todoCategory;
+    #_value;
+    #_isComplete;
+    #_isPin;
 
     constructor(id, todoCategory, value, isComplete, isPin) {
         this.#_id = id;
@@ -49,13 +57,13 @@ class createObject {
 
     toJSON() {
         return {
-          id: this.id,
-          todoCategory:  this.todoCategory,
-          value:   this.value,
-          isComplete: this.isComplete,
-          isPin: this.isPin
+            id: this.id,
+            todoCategory: this.todoCategory,
+            value: this.value,
+            isComplete: this.isComplete,
+            isPin: this.isPin,
         };
     }
 }
 
-export {todos, todoCategories, createObject, saveTodos, saveTodoCategories};
+export { todos, todoCategories, todoObject, saveTodos, saveTodoCategories };

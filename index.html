@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>ToDoMVC</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script type="module" src="./controller/controller.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-			<h1>Todo App</h1>
-            <input type="text" placeholder="New Todo" class="inputForTodo">
-            <button id="addTodo">Add</button>
-            
-            <div class="dropDownMenu">
-                <label>Choose a category:</label>
-                <select id="todoCategories" data-placeholder = "Select a Category">
-                </select>
-            </div>
+      <header>
+        <h1>Todo App</h1>
+        <input type="text" placeholder="New Todo" class="inputForTodo" />
+        <button id="addTodo">Add</button>
 
-            <input type="text" placeholder="Add a new category." id="inputForTodoCategory">
-            <button class="addTodoCategory">Add</button>
-            
-        </header>
-
-        <div class="cardsForAllCategories">
+        <div class="dropDownMenu">
+          <label>Choose a category:</label>
+          <select
+            id="todoCategories"
+            data-placeholder="Select a Category"
+          ></select>
         </div>
+
+        <input
+          type="text"
+          placeholder="Add a new category."
+          id="inputForTodoCategory"
+        />
+        <button class="addTodoCategory">Add</button>
+      </header>
+
+      <div class="cardsForAllCategories"></div>
     </div>
-    
-</body>
+  </body>
 </html>
