@@ -18,21 +18,15 @@ function capitalizeFirstLetter(str) {
 }
 
 function findTaskId(currentDivId, todoCategory) {
-    for (let index = 0; index < todos[todoCategory].length; index++) {
-        if (todos[todoCategory][index].id == Number(currentDivId)) {
-            return index;
-        }
-    }
-    return -1;
+    let index = todos[todoCategory].findIndex((todo) => todo.id === Number(currentDivId));
+    return index;
 }
 
-function changeValueOfTodo(event, todoCategory, currentDivId) {
+function changeTodoValue(event, todoCategory, currentDivId) {
     const index = findTaskId(currentDivId, todoCategory);
     const updatedValue = event.target.textContent;
     if (updatedValue.trim() == "") {
-        const deleteButton = document.getElementById(
-            `deleteButton-${currentDivId}`
-        );
+        const deleteButton = document.getElementById(`deleteButton-${currentDivId}`);
         deleteButton.click();
         return;
     }
@@ -42,8 +36,7 @@ function changeValueOfTodo(event, todoCategory, currentDivId) {
 function handleCheckBoxEvent(div, divId, todoCategory) {
     const index = findTaskId(divId, todoCategory);
     div.classList.toggle("completed");
-    todos[todoCategory][index].isComplete =
-        !todos[todoCategory][index].isComplete;
+    todos[todoCategory][index].isComplete = !todos[todoCategory][index].isComplete;
     saveTodos();
 }
 
@@ -115,7 +108,7 @@ export function createItem(newEntry, todoCategory) {
 
     edit.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
-            changeValueOfTodo(e, todoCategory, divId);
+            changeTodoValue(e, todoCategory, divId);
             edit.setAttribute("contenteditable", false);
             saveTodos();
         }

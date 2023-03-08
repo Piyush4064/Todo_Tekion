@@ -27,7 +27,6 @@ header input {
 
 #addTodo {
     float: right;
-    width: 10%;
     height: 30px;
     border-radius: 5px;
     font-weight: 500;
@@ -96,6 +95,7 @@ header input {
 .card {
     text-align: center;
     width: 31%;
+    min-width: 20rem;
     height: 300px;
     border: 1px solid black;
     border-radius: 25px;
@@ -122,7 +122,6 @@ header input {
 }
 
 .addTodoCategory {
-    width: 10%;
     height: 30px;
     border-radius: 5px;
     font-weight: 500;
@@ -137,13 +136,6 @@ header input {
     color: #ffffff;
 }
 
-.fa-solid,
-.fa-trash,
-.fa-solid,
-.fa-thumbtack {
+[class^="fa-"] {
     pointer-events: none;
-}
-
-.todoCardExpand {
-    max-height: fit-content;
 }
