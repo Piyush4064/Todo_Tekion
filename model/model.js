@@ -5,10 +5,10 @@ const LOCAL_STORAGE_TODO_CATEGORIES_KEY = "LOCAL_STORAGE_TODO_CATEGORIES_KEY";
 const todoCategories =
     JSON.parse(localStorage.getItem(LOCAL_STORAGE_TODO_CATEGORIES_KEY)) || [];
 
-function saveTodos() {
+function updateTodosInStore() {
     localStorage.setItem(LOCAL_STORAGE_TODOS_KEY, JSON.stringify(todos));
 }
-function saveTodoCategories() {
+function updateCategoriesInStore() {
     localStorage.setItem(
         LOCAL_STORAGE_TODO_CATEGORIES_KEY,
         JSON.stringify(todoCategories)
@@ -66,4 +66,4 @@ class todoObject {
     }
 }
 
-export { todos, todoCategories, todoObject, saveTodos, saveTodoCategories };
+export { todos, todoCategories, todoObject, updateTodosInStore, updateCategoriesInStore };

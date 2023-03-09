@@ -12,25 +12,30 @@ body {
 }
 
 header {
-    width: 40%;
-    margin: 5% auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4%;
+    margin-bottom: 2.5%;
+    flex-direction: column;
 }
 
 header input {
-    font-size: 15px;
-    border: 2px solid #d1d3d4;
-    padding: 12px;
+    font-size: 1rem;
+    border: 0.1rem solid #d1d3d4;
+    padding: 0.7rem;
     color: #111111;
     font-weight: 500;
-    border-radius: 5px;
+    border-radius: 0.3rem;
 }
 
 #addTodo {
-    float: right;
-    height: 30px;
-    border-radius: 5px;
+    margin-left: 0.8rem;
+    width: 4rem;
+    height: 2rem;
+    border-radius: 0.3rem;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1rem;
     background-color: #000000;
     border: none;
     color: #ffffff;
@@ -96,36 +101,46 @@ header input {
     text-align: center;
     width: 31%;
     min-width: 20rem;
-    height: 300px;
+    height: 22rem;
     border: 1px solid black;
     border-radius: 25px;
     margin: 4px;
-    overflow-y: auto;
     padding-bottom: 1%;
 }
 
 .inputForTodo {
-    width: 70%;
-    height: 10%;
-    margin-bottom: 2%;
+    width: 20rem;
+    height: 7%;
+    margin-bottom: 0.5rem;
 }
 
 #todoCategories {
-    width: 200px;
+    width: 50%;
+    padding: 0.1rem;
+    font-size: 1rem;
+    border: 0.1rem solid #d1d3d4;
+    border-radius: 4px;
+    margin-left: 2%;
 }
 
 #inputForTodoCategory {
-    width: 40%;
+    width: 18rem;
     height: 7%;
-    margin: 10px;
+    margin: 0.8rem;
     margin-left: 0;
 }
 
+.cardList {
+    height: 18rem;
+    overflow-y: auto;
+}
+
 .addTodoCategory {
-    height: 30px;
-    border-radius: 5px;
+    height: 2rem;
+    width: 4rem;
+    border-radius: 0.3rem;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1rem;
     background-color: #000000;
     border: none;
     color: #ffffff;
@@ -138,4 +153,39 @@ header input {
 
 [class^="fa-"] {
     pointer-events: none;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 450px) {
+    .header {
+        flex-direction: column;
+        justify-content: center;
+    }
+    #addTodo {
+        margin: 1rem 0;
+    }
+}
+
+.todoHeader {
+    text-align: center;
+}
+
+.categoryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 450px) {
+    #inputForTodoCategory {
+        margin-left: 0.8rem;
+    }
+    .categoryHeader {
+        flex-direction: column;
+    }
 }

@@ -3,15 +3,16 @@ import {
     todos,
     todoCategories,
     todoObject,
-    saveTodos,
-    saveTodoCategories,
+    updateTodosInStore,
+    updateCategoriesInStore,
 } from "../model/model.js";
 
 const addTodo = document.querySelector("#addTodo");
 const todoInput = document.querySelector("header input");
 const addTodoCategory = document.querySelector(".addTodoCategory");
-const inputForTodoCategory = document.getElementById("inputForTodoCategory");
+const todoCategoryInput = document.getElementById("inputForTodoCategory");
 const todoCategorySelect = document.querySelector("#todoCategories");
+const ENTER = "Enter";
 
 function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -33,14 +34,14 @@ function changeTodoValue(event, todoCategory, currentDivId) {
     todos[todoCategory][index].value = updatedValue;
 }
 
-function handleCheckBoxEvent(div, divId, todoCategory) {
+function completeTodo(div, divId, todoCategory) {
     const index = findTaskId(divId, todoCategory);
     div.classList.toggle("completed");
     todos[todoCategory][index].isComplete = !todos[todoCategory][index].isComplete;
-    saveTodos();
+    updateTodosInStore();
 }
 
-function handleDeleteButtonEvent(div, divId, todoCategory) {
+function deleteTodo(div, divId, todoCategory) {
     const index = findTaskId(divId, todoCategory);
     todos[todoCategory].splice(index, 1);
     if (todos[todoCategory].length == 0) {
@@ -49,10 +50,10 @@ function handleDeleteButtonEvent(div, divId, todoCategory) {
         removeCard.remove();
     }
     div.remove();
-    saveTodos();
+    updateTodosInStore();
 }
 
-function handlePinButtonEvent(div, divId, todoCategory) {
+function pinTodo(div, divId, todoCategory) {
     const pinButton = div.childNodes[3];
     const index = findTaskId(divId, todoCategory);
     view.pinButtonChanges(pinButton);
@@ -62,55 +63,55 @@ function handlePinButtonEvent(div, divId, todoCategory) {
     todos[todoCategory].splice(index, 1);
     const currentDisplay = document.getElementById(todoCategory);
 
-    if (!isPin) {
-        todos[todoCategory].unshift(todoToUpdate);
-        currentDisplay.prepend(div);
-    } else {
+    if (isPin) {
         todos[todoCategory].push(todoToUpdate);
         currentDisplay.append(div);
+    } else {
+        todos[todoCategory].unshift(todoToUpdate);
+        currentDisplay.prepend(div);
     }
-    saveTodos();
+    updateTodosInStore();
 }
 
-export function createItem(newEntry, todoCategory) {
-    const div = view.createDivWithAllElements(newEntry);
+function handleTodoEvents(event, edit, div, todoCategory) {
+    const id = event.target.getAttribute("id");
     const divId = div.getAttribute("data-id");
 
+    if (id == null) {
+        return;
+    }
+
+    if (id.startsWith("checkBox")) {
+        completeTodo(div, divId, todoCategory);
+    } else if (id.startsWith("deleteButton")) {
+        deleteTodo(div, divId, todoCategory);
+    } else if (id.startsWith("pinButton")) {
+        pinTodo(div, divId, todoCategory);
+    }
+
+    edit.addEventListener("dblclick", function () {
+        if (!div.classList.contains("completed")) {
+            edit.setAttribute("contenteditable", true);
+            edit.focus();
+        }
+    });
+}
+
+export function createItem(newTodo, todoCategory) {
+    const div = view.createDivWithAllElements(newTodo);
+    const divId = div.getAttribute("data-id");
     const edit = div.childNodes[1];
 
-    div.addEventListener("click", handleTodoEvents);
-
-    function handleTodoEvents(event) {
-        const id = event.target.getAttribute("id");
-        if (id != null) {
-            edit.classList.toggle("todoCardExpand");
-        }
-
-        if (id == null) {
-            return;
-        }
-
-        if (id.startsWith("checkBox")) {
-            handleCheckBoxEvent(div, divId, todoCategory);
-        } else if (id.startsWith("deleteButton")) {
-            handleDeleteButtonEvent(div, divId, todoCategory);
-        } else if (id.startsWith("pinButton")) {
-            handlePinButtonEvent(div, divId, todoCategory);
-        }
-
-        edit.addEventListener("dblclick", function () {
-            if (!div.classList.contains("completed")) {
-                edit.setAttribute("contenteditable", true);
-                edit.focus();
-            }
-        });
+    div.addEventListener("click", handleClick);
+    function handleClick(event) {
+        handleTodoEvents(event, edit, div, todoCategory);
     }
 
     edit.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
             changeTodoValue(e, todoCategory, divId);
             edit.setAttribute("contenteditable", false);
-            saveTodos();
+            updateTodosInStore();
         }
     });
     return div;
@@ -127,22 +128,22 @@ function addTodoClickEvent() {
         todoCategory = capitalizeFirstLetter(todoCategory);
         const uniqueId = new Date().valueOf();
 
-        let newEntry = new todoObject(uniqueId, todoCategory, value);
-        view.appendNewTodo(newEntry, todos.hasOwnProperty(todoCategory));
+        let newTodo = new todoObject(uniqueId, todoCategory, value);
+        view.appendNewTodo(newTodo, todos.hasOwnProperty(todoCategory));
         if (todos.hasOwnProperty(todoCategory)) {
-            todos[todoCategory].push(newEntry);
+            todos[todoCategory].push(newTodo);
         } else {
             todos[todoCategory] = [];
-            todos[todoCategory].push(newEntry);
+            todos[todoCategory].push(newTodo);
         }
 
         todoInput.value = "";
-        saveTodos();
+        updateTodosInStore();
     }
 }
 
 function addTodoEnterEvent(event) {
-    if (event.key === "Enter") {
+    if (event.key === ENTER) {
         event.preventDefault();
         addTodo.click();
     }
@@ -152,7 +153,7 @@ todoInput.addEventListener("keypress", addTodoEnterEvent);
 addTodo.addEventListener("click", addTodoClickEvent);
 
 addTodoCategory.addEventListener("click", function (e) {
-    let value = inputForTodoCategory.value;
+    let value = todoCategoryInput.value;
     if (value.trim() === "") {
         alert("Please enter valid category");
     } else {
@@ -160,14 +161,14 @@ addTodoCategory.addEventListener("click", function (e) {
         if (!todoCategories.includes(value)) {
             todoCategories.push(value);
             view.appendNewCategory(value);
-            saveTodoCategories();
+            updateCategoriesInStore();
         }
     }
-    inputForTodoCategory.value = "";
+    todoCategoryInput.value = "";
 });
 
-inputForTodoCategory.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
+todoCategoryInput.addEventListener("keypress", function (event) {
+    if (event.key === ENTER) {
         event.preventDefault();
         addTodoCategory.click();
     }

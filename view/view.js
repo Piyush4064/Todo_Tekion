@@ -1,6 +1,6 @@
 import { createItem } from "../controller/controller.js";
 
-const cardsForAllCategories = document.querySelector(".cardsForAllCategories");
+const allCategoriesCard = document.querySelector(".cardsForAllCategories");
 const todoCategories = document.querySelector("#todoCategories");
 
 function createButton(iconType, className) {
@@ -10,13 +10,13 @@ function createButton(iconType, className) {
     return button;
 }
 
-function createCardForNewCategory(todoCategory) {
+function createNewCategoryCard(todoCategory) {
     const cardForCategory = document.createElement("div");
     cardForCategory.classList.add("card");
     const h3 = document.createElement("h3");
     h3.textContent = todoCategory;
     const cardForTodo = document.createElement("div");
-    cardForTodo.setAttribute("class", "forInsert");
+    cardForTodo.setAttribute("class", "cardList");
     cardForTodo.setAttribute("id", todoCategory);
     cardForCategory.append(h3);
     cardForCategory.append(cardForTodo);
@@ -39,13 +39,13 @@ const view = {
     renderTodo(todos) {
         for (let categoryOfTodo in todos) {
             const [cardForCategory, cardForTodo] =
-                createCardForNewCategory(categoryOfTodo);
+                createNewCategoryCard(categoryOfTodo);
             for (let entry of todos[categoryOfTodo]) {
                 let newTodo = createItem(entry, categoryOfTodo);
                 checkForCompletedAndPinned(newTodo, entry);
                 cardForTodo.append(newTodo);
             }
-            cardsForAllCategories.append(cardForCategory);
+            allCategoriesCard.append(cardForCategory);
         }
     },
 
@@ -67,10 +67,10 @@ const view = {
 
     appendNewTodo(newEntry, cardForNewCategory) {
         if (!cardForNewCategory) {
-            const [cardForCategory, cardForTodo] = createCardForNewCategory(
+            const [cardForCategory, cardForTodo] = createNewCategoryCard(
                 newEntry.todoCategory
             );
-            cardsForAllCategories.append(cardForCategory);
+            allCategoriesCard.append(cardForCategory);
         }
         const currentDisplay = document.getElementById(newEntry.todoCategory);
         let newTodo = createItem(newEntry, newEntry.todoCategory);
