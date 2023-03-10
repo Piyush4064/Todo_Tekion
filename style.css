@@ -1,0 +1,191 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+.container {
+    width: 90%;
+    min-width: 450px;
+    height: 100vh;
+    margin: 0 auto;
+    background: white;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4%;
+    margin-bottom: 2.5%;
+    flex-direction: column;
+}
+
+header input {
+    font-size: 1rem;
+    border: 0.1rem solid #d1d3d4;
+    padding: 0.7rem;
+    color: #111111;
+    font-weight: 500;
+    border-radius: 0.3rem;
+}
+
+#addTodo {
+    margin-left: 0.8rem;
+    width: 4rem;
+    height: 2rem;
+    border-radius: 0.3rem;
+    font-weight: 500;
+    font-size: 1rem;
+    background-color: #000000;
+    border: none;
+    color: #ffffff;
+}
+
+.todoCard {
+    width: 70%;
+    padding: 5px 10px;
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid #000;
+    cursor: default;
+    margin: 0 auto;
+    margin-top: 2%;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete {
+    background-color: #000;
+    color: #ffffff;
+}
+
+.pinStyle,
+.delete {
+    height: 2.5em;
+    width: 2.5em;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-left: 2%;
+    flex-grow: 1;
+}
+
+.completed {
+    text-decoration: line-through;
+}
+
+.checkBox {
+    margin-right: 2%;
+    flex-grow: 1;
+    accent-color: #000;
+}
+
+.inputSpan {
+    margin-top: 1%;
+    padding: 1% 5% 1% 1%;
+    width: 60%;
+    max-height: 50px;
+    overflow-y: auto;
+    word-wrap: break-word;
+    flex-grow: 7;
+}
+
+.cardsForAllCategories {
+    margin-top: 4%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.card {
+    text-align: center;
+    width: 31%;
+    min-width: 20rem;
+    height: 22rem;
+    border: 1px solid black;
+    border-radius: 25px;
+    margin: 4px;
+    padding-bottom: 1%;
+}
+
+.inputForTodo {
+    width: 20rem;
+    height: 7%;
+    margin-bottom: 0.5rem;
+}
+
+#todoCategories {
+    width: 50%;
+    padding: 0.1rem;
+    font-size: 1rem;
+    border: 0.1rem solid #d1d3d4;
+    border-radius: 4px;
+    margin-left: 2%;
+}
+
+#inputForTodoCategory {
+    width: 18rem;
+    height: 7%;
+    margin: 0.8rem;
+    margin-left: 0;
+}
+
+.cardList {
+    height: 18rem;
+    overflow-y: auto;
+}
+
+.addTodoCategory {
+    height: 2rem;
+    width: 4rem;
+    border-radius: 0.3rem;
+    font-weight: 500;
+    font-size: 1rem;
+    background-color: #000000;
+    border: none;
+    color: #ffffff;
+}
+
+.pinButtonToggle {
+    background-color: #000;
+    color: #ffffff;
+}
+
+[class^="fa-"] {
+    pointer-events: none;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 450px) {
+    .header {
+        flex-direction: column;
+        justify-content: center;
+    }
+    #addTodo {
+        margin: 1rem 0;
+    }
+}
+
+.todoHeader {
+    text-align: center;
+}
+
+.categoryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 450px) {
+    #inputForTodoCategory {
+        margin-left: 0.8rem;
+    }
+    .categoryHeader {
+        flex-direction: column;
+    }
+}
